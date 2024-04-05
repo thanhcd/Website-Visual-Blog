@@ -1,0 +1,74 @@
+{% include 'form/css.html' %}
+
+<body>
+    {% include 'form/header.html' %}
+    <main id="main">
+        <!-- ======= Breadcrumbs ======= -->
+        <section class="breadcrumbs">
+            <div class="container">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h2>Inner Page</h2>
+                    <ol>
+                        <li><a href="index.html">Home</a></li>
+                        <li>Inner Page</li>
+                    </ol>
+                </div>
+            </div>
+        </section><!-- End Breadcrumbs -->
+
+        <section class="inner-page">
+            <div class="container">
+                <div class="login-page">
+                    <div class="form">
+                        <form action="/register" class="register-form" method="POST" id="registrationForm">
+                            <input type="text" name="account" placeholder="account" required />
+                            <span id="account-error"></span>
+
+                            <input type="password" name="password" placeholder="password" required />
+                            <span id="password-error"></span>
+
+                            <input type="email" name="email" placeholder="email address" required />
+                            <span id="email-error"></span>
+
+                            <input type="text" name="username" placeholder="username" required />
+                            <span id="username-error"></span>
+
+                            <input type="date" name="date" placeholder="date" required />
+                            <span id="date-error"></span>
+
+                            <input type="text" name="phone" placeholder="phone" required />
+                            <span id="phone-error"></span>
+                            
+                            <button type="submit">create</button>
+                            <p class="message">Already registered? <a href="{{ url_for('login_page') }}">Login</a></p>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    {% include 'form/footer.html' %}
+</body>
+
+<script>
+    const accountInput = document.getElementById("account");
+    const passwordInput = document.getElementById("password");
+    const accountError = document.getElementById("account-error");
+    const passwordError = document.getElementById("password-error");
+
+    const loginForm = document.querySelector(".login-form");
+
+    loginForm.addEventListener("submit", (event) => {
+        event.preventDefault();
+
+        accountError.textContent = "";
+        passwordError.textContent = "";
+
+        if (!accountInput.value) {
+            accountError.textContent = "Please enter your username.";
+        }
+
+        if (!passwordInput.value) {
+            passwordError.textContent = "Please enter your password.";
+        }
+    });

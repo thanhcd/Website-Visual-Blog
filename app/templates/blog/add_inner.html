@@ -1,0 +1,74 @@
+<div class="modal fade" id="editblog" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="addModalLabel">Edit information</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body">
+                <img src="" alt="Post Image" class="image-preview">
+                <textarea name="content" class="area-input-update"></textarea>
+            </div>
+            <form action="/update_blog" method="POST" enctype="multipart/form-data">
+                <div class="modal-footer d-flex flex-wrap justify-content-between align-items-center">
+                    <label for="inputTag">
+                        <i class='bx bxs-image bx-sm'></i>
+                        <input id="inputTag" type="file" name="image" />
+                        <span id="imageName"></span>
+                    </label>
+                    <!-- <input type="file" name="image" placeholder="image" /> -->
+                    <input type="hidden" name="blogid" value="blogId">
+                    <input type="hidden" name="accid" value="{{ session['account'] }}">
+                    <button class="btn" type="submit"><i class='bx bxs-save bx-sm'></i></button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    const editButtons = document.querySelectorAll('.btn[data-bs-target="#editblog"]');
+
+    editButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const blogId = button.dataset.blogid;
+            const accId = button.dataset.accid;
+            const imageUrl = button.dataset.image; // Optional for image preview
+            const content = button.dataset.content;
+
+            // Access the hidden blog ID field in the edit modal
+            const modalContent = document.getElementById('editblog').querySelector('.modal-content');
+            const hiddenBlogIdField = modalContent.querySelector('input[name="blogid"]');
+
+            // Populate the hidden blog ID field with the retrieved blog ID
+            hiddenBlogIdField.value = blogId;
+
+            // ... other logic to populate content, image preview (if applicable)
+            const contentField = modalContent.querySelector('textarea[name="content"]');
+            contentField.value = content;
+
+            // Optionally pre-fill the image preview (if available)
+            const imagePreview = modalContent.querySelector('.image-preview');
+            if (imagePreview) {
+                imagePreview.src = imageUrl;
+            }
+        });
+    });
+
+    const input = document.getElementById('inputTag');
+    const imageName = document.getElementById('imageName');
+
+    input.addEventListener('change', () => {
+        const file = input.files[0];
+        if (file) {
+            imageName.textContent = processImageName(file.name);
+        }
+    });
+
+    function processImageName(name) {
+        return name
+            .replace(/ /g, '-') // Thay thế khoảng trắng bằng dấu gạch ngang
+            .replace(/[^a-zA-Z0-9-_.]/g, ''); // Loại bỏ các ký tự đặc biệt
+    }
+</script>
