@@ -26,8 +26,16 @@
                                 <div class="row g-0">
                                     <div class="col-md-4 gradient-custom text-center text-white"
                                         style="border-top-left-radius: .5rem; border-bottom-left-radius: .5rem;">
-                                        <img src="{{ url_for('static', filename='img/user_icon.png') }}" alt="Avatar"
+                                        {% if gender == 'Male' %}
+                                        <img src="{{ url_for('static', filename='img/male_icon.png') }}" alt="Avatar"
                                             class="img-fluid my-5" style="width: 80px;" />
+                                        {% elif gender == 'Female' %}
+                                        <img src="{{ url_for('static', filename='img/female_icon.png') }}" alt="Avatar"
+                                            class="img-fluid my-5" style="width: 80px;" />
+                                        {% else %}
+                                        <img src="{{ url_for('static', filename='img/user_icon.png') }}"
+                                            alt="Avatar" class="img-fluid my-5" style="width: 80px;" />
+                                        {% endif %}
                                         <h5>Fullname</h5>
                                         <p>{{ fullname }}</p>
                                         <button class="btn" data-bs-toggle="modal" data-bs-target="#editModal">

@@ -12,9 +12,6 @@
         <li>
           <a class="nav-link scrollto" href="{{ url_for('inner_page') }}">Your blog</a>
         </li>
-        <li>
-          <a class="nav-link scrollto" href="#contact">Contact</a>
-        </li>
         {% if session.get('account') is not none %}
         <li>
           <a class="getstarted scrollto" href="{{ url_for('user_page') }}">{{ session['account'] }}</a>

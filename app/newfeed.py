@@ -14,7 +14,7 @@ users = {'user': User('user', 'password')}
 
 def get_feed(mysql):
     cur = mysql.connection.cursor()
-    cur.execute("SELECT blog.blogid, blog.accid, blog.content, blog.image, user.username FROM blog INNER JOIN user ON blog.accid = user.accid")
+    cur.execute("SELECT blog.blogid, blog.accid, blog.content, blog.image, user.username FROM blog INNER JOIN user ON blog.accid = user.accid ORDER BY BlogID DESC")
     rows = cur.fetchall()
     cur.close()
 

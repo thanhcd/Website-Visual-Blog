@@ -13,6 +13,8 @@ users = {'user': User('user', 'password')}
 
 # @app.route('/register', methods=["POST", "GET"])
 def register(mysql):
+    gender = request.form.get('gender')
+    print(gender)
     if request.method == "POST":
         details = request.form
         account = details['account']
@@ -27,7 +29,7 @@ def register(mysql):
         cur.execute("SELECT LAST_INSERT_ID()")
         account_id = cur.fetchone()[0]
 
-        cur.execute("INSERT INTO user(AccID, Username, Date, Phone) VALUES (%s, %s, %s, %s)", (account_id, username, date, phone))
+        cur.execute("INSERT INTO user(AccID, Username, Date, Phone, Gender) VALUES (%s, %s, %s, %s, %s)", (account_id, username, date, phone, gender))
         mysql.connection.commit()
         cur.close()
 

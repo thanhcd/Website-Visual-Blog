@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th4 05, 2024 lúc 06:22 AM
+-- Thời gian đã tạo: Th4 06, 2024 lúc 04:06 PM
 -- Phiên bản máy phục vụ: 10.4.32-MariaDB
 -- Phiên bản PHP: 8.2.12
 
@@ -47,7 +47,10 @@ INSERT INTO `account` (`AccID`, `PermissionID`, `Account`, `Password`, `Email`) 
 (8, '1', 'test3', '123', 'chauducthanh08@gmail.com'),
 (9, '1', 'test4', '123', 'hten4567@gmail.com'),
 (10, '1', 'test5', '123', 'fia27975@nezid.com'),
-(11, '1', 'test2', '', '');
+(11, '1', 'test2', '', ''),
+(12, '1', 'gender', '123', 'chauducthanh02@gmail.com'),
+(13, '1', 'female', '123', 'chauducthanh03@gmail.com'),
+(14, '1', 'other', '123', 'hten4567@gmail.com');
 
 -- --------------------------------------------------------
 
@@ -106,7 +109,8 @@ INSERT INTO `blog_comment` (`BlogID`, `CommentID`) VALUES
 (20, 22),
 (22, 23),
 (23, 32),
-(23, 33);
+(23, 33),
+(25, 34);
 
 -- --------------------------------------------------------
 
@@ -136,7 +140,10 @@ INSERT INTO `blog_like_test` (`BlogID`, `AccID`, `Likes`) VALUES
 (20, 8, 1),
 (21, 8, 1),
 (23, 7, 1),
-(24, 7, 1);
+(23, 8, 1),
+(24, 7, 1),
+(24, 8, 1),
+(25, 8, 1);
 
 -- --------------------------------------------------------
 
@@ -162,7 +169,8 @@ INSERT INTO `comment` (`CommentID`, `AccID`, `Comment`) VALUES
 (22, 7, 'aloo anh bình gold'),
 (23, 7, 'chưa tài đâu'),
 (32, 7, '        ádasdasd'),
-(33, 7, 'ádlkaspofmlksge');
+(33, 7, 'ádlkaspofmlksge'),
+(34, 8, 'beautiful girl, i love u bro');
 
 -- --------------------------------------------------------
 
@@ -193,19 +201,23 @@ CREATE TABLE `user` (
   `AccID` int(11) NOT NULL,
   `Username` varchar(50) NOT NULL,
   `Date` date NOT NULL,
-  `Phone` varchar(10) NOT NULL
+  `Phone` varchar(10) NOT NULL,
+  `Gender` varchar(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Đang đổ dữ liệu cho bảng `user`
 --
 
-INSERT INTO `user` (`AccID`, `Username`, `Date`, `Phone`) VALUES
-(7, 'Châu Đức Thạnh', '2024-04-02', '0976761378'),
-(8, 'ChaUTD', '2024-04-26', '397974041'),
-(9, 'anh 7 tạ', '2024-03-27', '2147483647'),
-(10, 'JagoGaines1347@pay0s.com', '2024-04-02', '2147483647'),
-(11, '', '0000-00-00', '');
+INSERT INTO `user` (`AccID`, `Username`, `Date`, `Phone`, `Gender`) VALUES
+(7, 'Châu Đức Thạnh', '2024-04-02', '0976761378', ''),
+(8, 'ChaUTD', '2024-04-26', '397974041', ''),
+(9, 'anh 7 tạ', '2024-03-27', '2147483647', ''),
+(10, 'JagoGaines1347@pay0s.com', '2024-04-02', '2147483647', ''),
+(11, '', '0000-00-00', '', ''),
+(12, 'thanh', '2024-04-06', '1231354356', 'Male'),
+(13, 'ducthanh', '2024-04-06', '0976761378', 'Female'),
+(14, 'vinhvien0916', '2024-04-10', '43623423', 'Other Gend');
 
 --
 -- Chỉ mục cho các bảng đã đổ
@@ -269,7 +281,7 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT cho bảng `account`
 --
 ALTER TABLE `account`
-  MODIFY `AccID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `AccID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT cho bảng `blog`
@@ -281,7 +293,7 @@ ALTER TABLE `blog`
 -- AUTO_INCREMENT cho bảng `comment`
 --
 ALTER TABLE `comment`
-  MODIFY `CommentID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
+  MODIFY `CommentID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
 
 --
 -- Các ràng buộc cho các bảng đã đổ

@@ -2233,3 +2233,7 @@ label{
 .d-flex.flex-start {
   margin-top: 0; /* Remove potential top margin */
 }
+
+.error-message {
+  color: red;
+}

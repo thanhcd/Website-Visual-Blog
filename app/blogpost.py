@@ -34,7 +34,7 @@ def post(mysql):
 def show_post_details(mysql):
     acc_id = session.get('AccID') 
     cur = mysql.connection.cursor()
-    cur.execute("SELECT * FROM blog WHERE AccID = %s", (acc_id,))
+    cur.execute("SELECT * FROM blog WHERE AccID = %s ORDER BY BlogID DESC", (acc_id,))
     rows = cur.fetchall()  # Fetch all rows
     cur.close() 
 
@@ -92,10 +92,8 @@ def update_post(mysql):
 
     try:
         blog_id = request.form.get('blogid')
-          # Use request.files for image uploads
-        image = request.files.get('image')
-        print(image)
-        content = request.form.get('content')
+        image = request.files.get('image')     
+        content = request.form.get('content')    
         account_id = session.get('AccID')
 
         if image:

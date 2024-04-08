@@ -7,13 +7,11 @@
           <textarea class="w-100" name="content" placeholder="Bạn đang nghĩ gì" style="padding: 0"></textarea>
         </div>
         <div class="card-footer d-flex justify-content-between">
-          <div>
-            <label for="inputTag">
-              <i class='bx bxs-image bx-sm'></i>
-              <input id="inputTag" type="file" name="image" placeholder="image" />
-              <span id="imageName"></span>
-            </label>
-          </div>
+          <label for="inputTag1">
+            <i class='bx bxs-image bx-sm'></i>
+            <input id="inputTag1" type="file" name="image" placeholder="image" />
+            <span id="imageName1"></span>
+          </label>
           <button type="submit" class="btn"><i class='bx bxs-send bx-sm'></i></button>
         </div>
       </form>
@@ -22,19 +20,24 @@
 </div>
 
 <script>
-  const input = document.getElementById('inputTag');
-  const imageName = document.getElementById('imageName');
+  const input1 = document.getElementById('inputTag1');
+  const imageName1 = document.getElementById('imageName1');
 
-  input.addEventListener('change', () => {
-    const file = input.files[0];
+  input1.addEventListener('change', (event) => {
+    const file = event.target.files[0];
     if (file) {
-      imageName.textContent = processImageName(file.name);
+      imageName1.textContent = formatFileName(file.name);
     }
   });
 
-  function processImageName(name) {
-    return name
-      .replace(/ /g, '-') // Thay thế khoảng trắng bằng dấu gạch ngang
-      .replace(/[^a-zA-Z0-9-_.]/g, ''); // Loại bỏ các ký tự đặc biệt
+  function formatFileName(fileName) {
+    const maxLength = 20; // Độ dài tối đa của tên tệp
+    let formattedName = fileName;
+    if (formattedName.length > maxLength) {
+      const extension = formattedName.substring(formattedName.lastIndexOf('.'));
+      const truncatedName = formattedName.substring(0, maxLength - extension.length - 3);
+      formattedName = truncatedName + '...' + extension;
+    }
+    return formattedName;
   }
 </script>

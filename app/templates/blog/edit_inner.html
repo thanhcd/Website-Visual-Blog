@@ -5,19 +5,17 @@
                 <h1 class="modal-title fs-5" id="addModalLabel">Edit information</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-
-            <div class="modal-body">
-                <img src="" alt="Post Image" class="image-preview">
-                <textarea name="content" class="area-input-update"></textarea>
-            </div>
             <form action="/update_blog" method="POST" enctype="multipart/form-data">
-                <div class="modal-footer d-flex flex-wrap justify-content-between align-items-center">
-                    <label for="inputTag">
+                <div class="modal-body">
+                    <img src="" alt="Post Image" class="image-preview">
+                    <textarea name="content" class="area-input-update"></textarea>
+                </div>
+                <div class="modal-footer d-flex flex-wrap justify-content-between">
+                    <label for="inputTag2">
                         <i class='bx bxs-image bx-sm'></i>
-                        <input id="inputTag" type="file" name="image" />
-                        <span id="imageName"></span>
+                        <input id="inputTag2" type="file" name="image" placeholder="image" />
+                        <span id="imageName2"></span>
                     </label>
-                    <!-- <input type="file" name="image" placeholder="image" /> -->
                     <input type="hidden" name="blogid" value="blogId">
                     <input type="hidden" name="accid" value="{{ session['account'] }}">
                     <button class="btn" type="submit"><i class='bx bxs-save bx-sm'></i></button>
@@ -26,6 +24,29 @@
         </div>
     </div>
 </div>
+
+<script>
+    const input2 = document.getElementById('inputTag2');
+    const imageName2 = document.getElementById('imageName2');
+
+    input2.addEventListener('change', (event) => {
+        const file = event.target.files[0];
+        if (file) {
+            imageName2.textContent = formatFileName(file.name);
+        }
+    });
+
+    function formatFileName(fileName) {
+        const maxLength = 20; // Độ dài tối đa của tên tệp
+        let formattedName = fileName;
+        if (formattedName.length > maxLength) {
+            const extension = formattedName.substring(formattedName.lastIndexOf('.'));
+            const truncatedName = formattedName.substring(0, maxLength - extension.length - 3);
+            formattedName = truncatedName + '...' + extension;
+        }
+        return formattedName;
+    }
+</script>
 
 <script>
     const editButtons = document.querySelectorAll('.btn[data-bs-target="#editblog"]');
@@ -55,20 +76,4 @@
             }
         });
     });
-
-    const input = document.getElementById('inputTag');
-    const imageName = document.getElementById('imageName');
-
-    input.addEventListener('change', () => {
-        const file = input.files[0];
-        if (file) {
-            imageName.textContent = processImageName(file.name);
-        }
-    });
-
-    function processImageName(name) {
-        return name
-            .replace(/ /g, '-') // Thay thế khoảng trắng bằng dấu gạch ngang
-            .replace(/[^a-zA-Z0-9-_.]/g, ''); // Loại bỏ các ký tự đặc biệt
-    }
 </script>

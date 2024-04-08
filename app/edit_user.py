@@ -43,8 +43,8 @@ def show_user_details(mysql):
     acc_id = session.get('AccID')  # Lấy AccID từ phiên làm việc
 
     cur = mysql.connection.cursor()
-    cur.execute("SELECT user.username, user.date, user.phone, account.email FROM user INNER JOIN account ON user.AccID = account.AccID WHERE account.AccID = %s", (acc_id,))
+    cur.execute("SELECT user.username, user.date, user.phone, user.gender, account.email FROM user INNER JOIN account ON user.AccID = account.AccID WHERE account.AccID = %s", (acc_id,))
     user_data = cur.fetchone()
     mysql.connection.commit()
     cur.close()
-    return render_template('user/user.html', fullname=user_data[0], date=user_data[1], phone=user_data[2], email=user_data[3])
+    return render_template('user/user.html', fullname=user_data[0], date=user_data[1], phone=user_data[2],  gender = user_data[3], email=user_data[4])
