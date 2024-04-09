@@ -26,16 +26,20 @@ def get_feed(mysql):
         accid = row[1]
         content = row[2]  
         image = row[3]  
-        image_path = url_for('static', filename=f'img/uploads/{image}')
+        
+        if image is not None:
+            image_path = url_for('static', filename=f'img/uploads/{image}')
+        else:
+            image_path = None
+        
         post = {
             'content': content,
             'image': image_path,
             'accid': accid,
-            'blogid' : blogid,
-            'username' : row[4]
+            'blogid': blogid,
+            'username': row[4]
         }
         posts.append(post)
-        
     return posts
 
 #hàm bình luận
@@ -62,33 +66,34 @@ def comment(mysql):
 #hàm show comment
 def show_comment_details(mysql):
     cur = mysql.connection.cursor()
-    cur.execute("SELECT comment.comment, blog_comment.blogID, user.Username, comment.commentID, comment.accID FROM comment INNER JOIN blog_comment ON comment.CommentID = blog_comment.CommentID INNER JOIN user ON user.AccID = comment.AccID")
+    cur.execute("""
+        SELECT comment.comment, blog_comment.blogID, user.Username, comment.commentID, comment.accID
+        FROM comment
+        INNER JOIN blog_comment ON comment.CommentID = blog_comment.CommentID
+        INNER JOIN user ON user.AccID = comment.AccID
+    """)
     comments = cur.fetchall()
     cur.close()
 
     comment_details = []
 
-    # Loop through fetched rows and populate 'comment_details' list
     for comment in comments:
-        comment_text = comment[0]
+        comment_text = comment[0].replace('\r\n', '<br>')  # Thay thế \r\n bằng <br>
         blogid = comment[1]
         username = comment[2]
         commentid = comment[3]
         accid = comment[4]
         
         comment_detail = {
-            'comment' : comment_text,
-            'blogid' : blogid,
-            'username' : username,
-            'commentid' : commentid,
-            'accid' : accid
-            
+            'comment': comment_text,
+            'blogid': blogid,
+            'username': username,
+            'commentid': commentid,
+            'accid': accid
         }
         comment_details.append(comment_detail)
         
     return comment_details
-
-
 
 #hàm xóa bình luận
 def del_comment_details(mysql):

@@ -16,13 +16,13 @@
             </div>
         </section><!-- End Breadcrumbs -->
 
-        <section class = "register-form">
+        <section class="register-form">
             <div class="container">
                 <div class="row justify-content-center align-items-center mt-10">
                     <div class="col-12 col-lg-9 col-xl-7">
                         <div class="card shadow-2-strong card-registration" style="border-radius: 15px;">
                             <div class="card-body p-4 p-md-5">
-                                <h3 class="mb-4 pb-2 pb-md-0 mb-md-5">Registration Form</h3>
+                                <h3 class="mb-4 pb-2 pb-md-0 mb-md-5">Register</h3>
                                 <form action="/register" class="register-form" method="POST" id="registrationForm">
                                     <div class="row">
                                         <div class="mb-4">
@@ -159,10 +159,16 @@
         if (email === '') {
             document.getElementById('email-error').textContent = 'Please enter your email.';
             event.preventDefault();
+        } else if (!email.endsWith('@gmail.com')) {
+            document.getElementById('email-error').textContent = 'Please enter a valid Gmail address.';
+            event.preventDefault();
         }
 
         if (phone === '') {
             document.getElementById('phone-error').textContent = 'Please enter your phone number.';
+            event.preventDefault();
+        } else if (!/^(09|08|02)\d{8}$/.test(phone)) {
+            document.getElementById('phone-error').textContent = 'Please enter a valid phone number containing 10 digits at most.';
             event.preventDefault();
         }
     });

@@ -32,18 +32,18 @@
                     <span class="font-weight-bold" color="#16507b">
                       <p class="form-icon">Visualblog</p>
                     </span>
-                    <small class="text-primary">
-                      {% if session['account'] %}
-                      {{ session['account'] }}
-                      {% else %}
-                      Anonymous User
-                      {% endif %}
-                    </small>
+                    <small class="text-primary">{{ post.username }}</small>
                   </div>
                 </div>
-              </div>
-              <p class="card-text" style="margin-left : 20px;">{{ post.content }}</p>
+              </div>  
+              {% if post.image == None %}
+              <p class="text-justify" style="margin-left: 1.5rem;">{{ post.content }}</p>
+              {% elif post.content == None %}
               <img class="output-img-post" src="{{ post.image }}" alt="" />
+              {% else %}
+              <p class="text-justify" style="margin-left: 1.5rem;">{{ post.content }}</p>
+              <img class="output-img-post" src="{{ post.image }}" alt="" />
+              {% endif %}
               <hr />
               <div class="d-flex justify-content-between align-items-center">
                 <div class="container">
@@ -75,10 +75,12 @@
                               <i class='bx bxs-message-alt-x bx-sm'></i>
                             </button>
                           </form>
-                          <button class="btn" data-bs-toggle="modal" data-bs-target="#update_comment"
-                            data-commentid="{{ comment.commentid }}">
-                            <i class='bx bxs-edit-alt bx-sm'></i>
-                          </button>
+                          <form>
+                            <button class="btn" data-bs-toggle="modal" data-bs-target="#update_comment"
+                              data-commentid="{{ comment.commentid }}">
+                              <i class='bx bxs-edit-alt bx-sm'></i>
+                            </button>
+                          </form>
                           {% endif %}
                         </div>
                       </div>
