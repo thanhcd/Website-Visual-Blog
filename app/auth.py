@@ -56,7 +56,7 @@ def login(mysql):
                 acc_id = session.get('AccID')  # Lấy AccID từ phiên làm việc
                 print("acc_id:", acc_id)
                 # flash('Đăng nhập thành công!', 'success')  # Hiển thị flash message
-                return redirect(url_for('inner_page'))
+                return redirect(url_for('newfeed'))
                 # return render_template('Onepage/inner-page.html')
         cur.close()
         flash('Tài khoản hoặc mật khẩu không chính xác', 'danger')

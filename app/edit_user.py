@@ -18,22 +18,18 @@ def edit_user(mysql):
         return redirect(url_for('login_page'))
 
     acc_id = session.get('AccID')  # Lấy AccID từ phiên làm việc
-    print(acc_id)
+
     if request.method == "POST":
         details = request.form
         fullname = details['fullname']
         date = details['date']
         phone = details['phone']
+        gender = details['gender']
         cur = mysql.connection.cursor()
-        cur.execute("UPDATE user SET Username = %s, Date = %s, Phone = %s WHERE AccID = %s", (fullname, date, phone, acc_id))
-        if cur.rowcount > 0:
-            print("Cập nhật thành công")
-        else:
-            print("Không tìm thấy tài khoản để cập nhật")
+        cur.execute("UPDATE user SET Username = %s, Date = %s, Phone = %s, Gender = %s WHERE AccID = %s", (fullname, date, phone, gender, acc_id))
         mysql.connection.commit()
         cur.close()
-        return redirect(url_for('user'))
-    return render_template('user/user.html')
+        return redirect(url_for('user_page'))
 
 
 def show_user_details(mysql):

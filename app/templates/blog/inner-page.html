@@ -32,18 +32,36 @@
                     <span class="font-weight-bold" color="#16507b">
                       <p class="form-icon">Visualblog</p>
                     </span>
-                    <small class="text-primary">
-                      {% if session['account'] %}
-                      {{ session['account'] }}
-                      {% else %}
-                      Anonymous User
-                      {% endif %}
-                    </small>
+                    <small class="text-primary">{{ post.username }}</small>
                   </div>
                 </div>
               </div>
-              <p class="card-text" style="margin-left : 20px;">{{ post.content }}</p>
+              {% if post.image == None %}
+              <div class="row">
+                <div class="col-lg-10">
+                  <p class="text-justify" style="margin-left: 1.5rem;">{{ post.content }}</p>
+                </div>
+                <div class="col-lg-2">
+                  <button class="btn" data-bs-toggle="modal" data-bs-target="#translationModal" data-content="{{ post.content }}">
+                    <i class="bx bx-transfer bx-sm"></i>
+                  </button>
+                </div>
+              </div>
+              {% elif post.content == None %}
               <img class="output-img-post" src="{{ post.image }}" alt="" />
+              {% else %}
+              <div class="row">
+                <div class="col-lg-10">
+                  <p class="text-justify" style="margin-left: 1.5rem;">{{ post.content }}</p>
+                </div>
+                <div class="col-lg-2">
+                  <button class="btn" data-bs-toggle="modal" data-bs-target="#translationModal" data-content="{{ post.content }}">
+                    <i class="bx bx-transfer bx-sm"></i>
+                  </button>
+                </div>
+              </div>
+              <img class="output-img-post" src="{{ post.image }}" alt="" />
+              {% endif %}
               <hr />
               <div class="d-flex justify-content-between align-items-center">
                 <div class="container">
@@ -68,16 +86,16 @@
                       <div class="col-lg-1">
                         <div class="row">
                           {% if comment.accid == session['AccID'] %}
-                          <form action='/del_comment' method="POST">
-                            <input type="hidden" name="blogid" value="{{ comment.blogid }}">
-                            <input type="hidden" name="commentid" value="{{ comment.commentid }}">
-                            <button type="submit" class="btn btn-sm">
-                              <i class='bx bxs-message-alt-x bx-sm'></i>
+                          <form action="/del_comment" method="POST" id="delete-comment-form">
+                            <input type="hidden" name="blogid" value="{{ comment.blogid }}" />
+                            <input type="hidden" name="commentid" value="{{ comment.commentid }}" />
+                            <button type="button" class="btn btn-sm" onclick="confirmDelete('{{ comment.commentid }}')">
+                              <i class="bx bxs-message-alt-x bx-sm"></i>
                             </button>
                           </form>
                           <button class="btn" data-bs-toggle="modal" data-bs-target="#update_comment"
                             data-commentid="{{ comment.commentid }}">
-                            <i class='bx bxs-edit-alt bx-sm'></i>
+                            <i class="bx bxs-edit-alt bx-sm"></i>
                           </button>
                           {% endif %}
                         </div>
@@ -114,4 +132,15 @@
 </body>
 
 {% include 'blog/edit_inner.html' %}
+{% include 'blog/edit_comment.html' %}
 {% include 'blog/API_modal.html' %}
+
+<script>
+  function confirmDelete(commentId) {
+    if (confirm("Bạn có chắc chắn muốn xoá comment này?")) {
+      var form = document.getElementById('delete-comment-form');
+      form.commentid.value = commentId;
+      form.submit();
+    }
+  }
+</script>

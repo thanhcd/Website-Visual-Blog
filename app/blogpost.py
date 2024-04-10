@@ -17,24 +17,24 @@ def post(mysql):
         return redirect(url_for('login_page'))
     
     acc_id = session.get('AccID')  # Lấy AccID từ phiên làm việc
-    print(acc_id)
-    
-    if request.method == "POST":
-        details = request.form
-        content = details["content"]
-        image = request.files["image"]
+    content = request.form.get('content')
+    image = request.files.get("image")
+
+    if image:  
         image.save(f'app/static/img/uploads/{image.filename}')
+
+    if content or image:  
         cur = mysql.connection.cursor()
-        cur.execute("INSERT INTO blog(AccID, Content, Image) VALUES (%s, %s, %s)", (acc_id, content, image.filename))
+        cur.execute("INSERT INTO blog(AccID, Content, Image) VALUES (%s, %s, %s)", (acc_id, content if content else None, image.filename if image else None))
         mysql.connection.commit()
         cur.close()
-        return redirect(url_for('inner_page'))
+    return redirect(url_for('inner_page'))
 
 
 def show_post_details(mysql):
     acc_id = session.get('AccID') 
     cur = mysql.connection.cursor()
-    cur.execute("SELECT * FROM blog WHERE AccID = %s ORDER BY BlogID DESC", (acc_id,))
+    cur.execute("SELECT blog.blogid, blog.accid, blog.content, blog.image, user.username FROM blog INNER JOIN user ON user.accid = blog.accid WHERE blog.accid = %s ORDER BY blog.blogid DESC", (acc_id,))
     rows = cur.fetchall()  # Fetch all rows
     cur.close() 
 
@@ -45,12 +45,19 @@ def show_post_details(mysql):
         accid = row[1]
         content = row[2]  
         image = row[3]  
-        image_path = url_for('static', filename=f'img/uploads/{image}')
+        username = row[4]  
+        
+        if image is not None:
+            image_path = url_for('static', filename=f'img/uploads/{image}')        
+        else:
+            image_path = None
+
         post = {
             'content': content,
             'image': image_path,
             'accid': accid,
-            'blogid' : blogid
+            'blogid' : blogid,
+            'username' : username,
         }
         posts.append(post)
         
@@ -96,14 +103,16 @@ def update_post(mysql):
         content = request.form.get('content')    
         account_id = session.get('AccID')
 
-        if image:
+        if image is not None and image.filename:
             image.save(f'app/static/img/uploads/{image.filename}')
+            image_filename = image.filename
+        else:
+            image_filename = None
 
         with mysql.connection.cursor() as cur:
-
             # Update query (image first to potentially handle larger data earlier)
             update_query = "UPDATE blog SET image = %s, content = %s WHERE blogid = %s AND accid = %s"
-            cur.execute(update_query, (image.filename, content, blog_id, account_id))
+            cur.execute(update_query, (image_filename, content, blog_id, account_id))
 
             mysql.connection.commit()
 
@@ -112,5 +121,4 @@ def update_post(mysql):
 
     except mysql.connection.Error as err:
         print(f"Error updating blog post: {err}")
-        return "Cập nhật không thành công. Vui lòng thử lại hoặc liên hệ quản trị viên."  # More informative message
-    
+        return "Cập nhật không thành công. Vui lòng thử lại hoặc liên hệ quản trị viên."
